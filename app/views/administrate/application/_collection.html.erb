@@ -70,7 +70,7 @@ to display a collection of resources in an HTML table.
           class: "action-edit",
         ) %></td>
 
-        <% if local_assigns.fetch(:destroyable, true) %>
+        <% if local_assigns.fetch(:destroyable, true) == false %>
           <td><%= link_to(
             t("administrate.actions.destroy"),
             [namespace, resource],
