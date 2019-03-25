@@ -70,13 +70,15 @@ to display a collection of resources in an HTML table.
           class: "action-edit",
         ) %></td>
 
-        <td><%= link_to(
-          t("administrate.actions.destroy"),
-          [namespace, resource],
-          class: "table__action--destroy",
-          method: :delete,
-          data: { confirm: t("administrate.actions.confirm") }
-        ) %></td>
+        <% if local_assigns.fetch(:destroyable, true) %>
+          <td><%= link_to(
+            t("administrate.actions.destroy"),
+            [namespace, resource],
+            class: "table__action--destroy",
+            method: :delete,
+            data: { confirm: t("administrate.actions.confirm") }
+          ) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
