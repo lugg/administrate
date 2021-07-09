@@ -6,7 +6,7 @@ module Administrate
       search_term = params[:search].to_s.strip
       resources = Administrate::Search.new(resource_resolver, search_term).run
       resources = order.apply(resources)
-      resources = resources.page(params[:page]).per(records_per_page)
+      resources = resources.page(params[:page]).without_count.per(records_per_page)
       page = Administrate::Page::Collection.new(dashboard, order: order)
 
       render locals: {
