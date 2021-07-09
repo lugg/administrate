@@ -62,5 +62,8 @@ It renders the `_table` partial to display details about the resources.
     table_title: "page-title"
   ) %>
 
-  <%= paginate resources, param_name: '_page' %>
-</section>
+<div style="text-align: center;">
+<%= link_to_prev_page resources, '<< Previous Page ' %>
+-
+<%= link_to_next_page resources, ' Next Page >>' %>
+</div>
