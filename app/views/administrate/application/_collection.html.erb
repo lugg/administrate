@@ -17,7 +17,6 @@ to display a collection of resources in an HTML table.
 
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Collection
 %>
-
 <table class="collection-data" aria-labelledby="page-title">
   <thead>
     <tr>
@@ -26,14 +25,13 @@ to display a collection of resources in an HTML table.
         cell-label--<%= attr_type.html_class %>
         cell-label--<%= collection_presenter.ordered_html_class(attr_name) %>
         " scope="col">
-        <%= link_to(sanitized_order_params.merge(
+          <%= link_to(sanitized_order_params.merge(
           collection_presenter.order_params_for(attr_name)
         )) do %>
-        <%= t(
+            <%= t(
           "helpers.label.#{resource_name}.#{attr_name}",
           default: attr_name.to_s,
         ).titleize %>
-
             <% if collection_presenter.ordered_by?(attr_name) %>
               <span class="cell-label__sort-indicator cell-label__sort-indicator--<%= collection_presenter.ordered_html_class(attr_name) %>">
                 <%= svg_tag(
@@ -50,30 +48,27 @@ to display a collection of resources in an HTML table.
       <th colspan="2" scope="col"></th>
     </tr>
   </thead>
-
   <tbody>
     <% resources.each do |resource| %>
       <tr class="table__row"
           role="link"
           tabindex="0"
-          data-url="<%= polymorphic_path([namespace, resource]) -%>"
+          data-url="<%= polymorphic_path([namespace.to_sym, resource]) -%>"
           >
         <% collection_presenter.attributes_for(resource).each do |attribute| %>
           <td class="cell-data cell-data--<%= attribute.html_class %>">
             <%= render_field attribute %>
           </td>
         <% end %>
-
         <td><%= link_to(
           t("administrate.actions.edit"),
-          [:edit, namespace, resource],
+          [:edit, namespace.to_sym, resource],
           class: "action-edit",
         ) %></td>
-
         <% if local_assigns.fetch(:destroyable, true) %>
           <td><%= link_to(
             t("administrate.actions.destroy"),
-            [namespace, resource],
+            [namespace.to_sym, resource],
             class: "table__action--destroy",
             method: :delete,
             data: { confirm: t("administrate.actions.confirm") }

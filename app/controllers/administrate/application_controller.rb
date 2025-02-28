@@ -9,62 +9,45 @@ module Administrate
       resources = resources.page(params[:page]).without_count.per(records_per_page)
       page = Administrate::Page::Collection.new(dashboard, order: order)
 
-      render locals: {
-        resources: resources,
-        search_term: search_term,
-        page: page,
-      }
+      render locals: { resources: resources, search_term: search_term, page: page }
     end
 
     def show
-      render locals: {
-        page: Administrate::Page::Show.new(dashboard, requested_resource),
-      }
+      render locals: { page: Administrate::Page::Show.new(dashboard, requested_resource) }
     end
 
     def new
-      render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource_class.new),
-      }
+      render locals: { page: Administrate::Page::Form.new(dashboard, resource_class.new) }
     end
 
     def edit
-      render locals: {
-        page: Administrate::Page::Form.new(dashboard, requested_resource),
-      }
+      render locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) }
     end
 
     def create
       resource = resource_class.new(resource_params)
 
       if resource.save
-        redirect_to(
-          [namespace, resource],
-          notice: translate_with_resource("create.success"),
-        )
+        redirect_to([namespace.to_sym, resource], notice: translate_with_resource('create.success'))
       else
-        render :new, locals: {
-          page: Administrate::Page::Form.new(dashboard, resource),
-        }
+        render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }
       end
     end
 
     def update
       if requested_resource.update(resource_params)
         redirect_to(
-          [namespace, requested_resource],
-          notice: translate_with_resource("update.success"),
+          [namespace.to_sym, requested_resource],
+          notice: translate_with_resource('update.success')
         )
       else
-        render :edit, locals: {
-          page: Administrate::Page::Form.new(dashboard, requested_resource),
-        }
+        render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) }
       end
     end
 
     def destroy
       requested_resource.destroy
-      flash[:notice] = translate_with_resource("destroy.success")
+      flash[:notice] = translate_with_resource('destroy.success')
       redirect_to action: :index
     end
 
@@ -72,11 +55,7 @@ module Administrate
 
     helper_method :nav_link_state
     def nav_link_state(resource)
-      if resource_name.to_s.pluralize == resource.to_s
-        :active
-      else
-        :inactive
-      end
+      resource_name.to_s.pluralize == resource.to_s ? :active : :inactive
     end
 
     def records_per_page
@@ -112,15 +91,11 @@ module Administrate
     helper_method :resource_name
 
     def resource_resolver
-      @_resource_resolver ||=
-        Administrate::ResourceResolver.new(controller_path)
+      @_resource_resolver ||= Administrate::ResourceResolver.new(controller_path)
     end
 
     def translate_with_resource(key)
-      t(
-        "administrate.controller.#{key}",
-        resource: resource_resolver.resource_title,
-      )
+      t("administrate.controller.#{key}", resource: resource_resolver.resource_title)
     end
   end
 end
