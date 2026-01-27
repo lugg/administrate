@@ -4,7 +4,7 @@ require "kaminari"
 require "momentjs-rails"
 require "neat"
 require "normalize-rails"
-require "sass-rails"
+require "sassc-rails"
 require "selectize-rails"
 require "sprockets/railtie"
 
