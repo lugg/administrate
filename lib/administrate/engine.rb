@@ -4,7 +4,7 @@ require "kaminari"
 require "momentjs-rails"
 require "neat"
 require "normalize-rails"
-require "sass-rails"
+require "sassc-rails"
 require "selectize-rails"
 require "sprockets/railtie"
 
@@ -23,7 +23,12 @@ module Administrate
     @@javascripts = []
     @@stylesheets = []
 
-    Engine.config.assets.precompile << /\.(?:svg)\z/
+    Engine.config.assets.precompile += %w[
+      *.svg
+      administrate/*.svg
+      administrate/application.css
+      administrate/application.js
+    ]
 
     def self.add_javascript(script)
       @@javascripts << script
